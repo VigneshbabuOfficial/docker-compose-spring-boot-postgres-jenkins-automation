@@ -25,18 +25,33 @@ pipeline {
         stage('Build docker image'){
             steps{
                 script{
-                    sh 'docker build -t vigneshofficial2020/docker-compose-spring-boot-postgres-jenkins-automation .'
+					// Determine OS type
+                    def isWindows = isUnix() ? false : true
+                    if (isWindows) {
+                        bat 'docker build -t vigneshofficial2020/docker-compose-spring-boot-postgres-jenkins-automation .'
+                    } else {
+                        sh 'docker build -t vigneshofficial2020/docker-compose-spring-boot-postgres-jenkins-automation .'
+                    }
                 }
             }
         }
         stage('Push image to Hub'){
             steps{
                 script{
-                   withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                   sh 'docker login -u vigneshofficial2020 -p ${dockerhubpwd}'
-
-}
+					// Determine OS type
+                    def isWindows = isUnix() ? false : true
+                    if (isWindows) {
+						withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+							bat 'docker login -u vigneshofficial2020 -p ${dockerhubpwd}'
+						}
+					bat 'docker push vigneshofficial2020/docker-compose-spring-boot-postgres-jenkins-automation'
+				   
+                    } else {
+						withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+							sh 'docker login -u vigneshofficial2020 -p ${dockerhubpwd}'
+						}
                    sh 'docker push vigneshofficial2020/docker-compose-spring-boot-postgres-jenkins-automation'
+                    }
                 }
             }
         }
