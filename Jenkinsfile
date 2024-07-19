@@ -4,10 +4,20 @@ pipeline {
         maven 'maven_3_9_8'
     }
     stages{
-        stage('Build Maven'){
+        stage('SCM Checkout'){
             steps{
                 checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/VigneshbabuOfficial/docker-compose-spring-boot-postgres-jenkins-automation']])
-                sh 'mvn clean install'
+            }
+        }
+		stage('Build Maven'){
+            steps{
+				// Determine OS type
+                    def isWindows = isUnix() ? false : true
+                    if (isWindows) {
+                        bat 'mvn clean install'
+                    } else {
+                        sh 'mvn clean install'
+                    }
             }
         }
         stage('Build docker image'){
