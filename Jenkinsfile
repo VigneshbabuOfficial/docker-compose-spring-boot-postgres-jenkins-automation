@@ -11,13 +11,15 @@ pipeline {
         }
 		stage('Build Maven'){
             steps{
-				// Determine OS type
+				script{
+					// Determine OS type
                     def isWindows = isUnix() ? false : true
                     if (isWindows) {
                         bat 'mvn clean install'
                     } else {
                         sh 'mvn clean install'
                     }
+				}
             }
         }
         stage('Build docker image'){
