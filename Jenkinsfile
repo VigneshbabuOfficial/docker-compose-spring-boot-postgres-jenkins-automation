@@ -28,9 +28,9 @@ pipeline {
 					// Determine OS type
                     def isWindows = isUnix() ? false : true
                     if (isWindows) {
-                        bat 'docker build -t vigneshofficial2020/docker-compose-spring-boot-postgres-jenkins-automation .'
+                        bat 'cd bezkoder-app & docker build -t vigneshofficial2020/docker-compose-spring-boot-postgres-jenkins-automation .'
                     } else {
-                        sh 'docker build -t vigneshofficial2020/docker-compose-spring-boot-postgres-jenkins-automation .'
+                        sh 'cd bezkoder-app & docker build -t vigneshofficial2020/docker-compose-spring-boot-postgres-jenkins-automation .'
                     }
                 }
             }
