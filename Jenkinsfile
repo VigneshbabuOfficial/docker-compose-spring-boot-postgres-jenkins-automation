@@ -47,7 +47,7 @@ pipeline {
                     if (isWindows) {
 						withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'DOCKERHUB_PASSWORD')]) {
 						
-						echo %DOCKERHUB_PASSWORD% | docker login -u %DOCKERHUB_USERNAME% --password-stdin
+						bat 'echo %DOCKERHUB_PASSWORD% | docker login -u %DOCKERHUB_USERNAME% --password-stdin'
 						}
 					bat 'docker push vigneshofficial2020/docker-compose-spring-boot-postgres-jenkins-automation'
 				   
